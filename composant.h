@@ -29,6 +29,7 @@ struct COMPOSANT {
 struct PRODUIT {
 	PRODUIT_TYPE type;
 	OPERATION op;
+	OPERATION op_next;
 };
 
 #endif
