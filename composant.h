@@ -1,6 +1,12 @@
 #ifndef PRODUIT_H
 #define PRODUIT_H
 
+
+
+enum CASE_TYPE{
+	PRODUIT,
+	COMPOSANT
+};
 enum COMPOSANT_TYPE {
 	C1,
 	C2,
@@ -27,9 +33,15 @@ struct COMPOSANT {
 	COMPOSANT_TYPE type;
 };
 struct PRODUIT {
-	PRODUIT_TYPE type;
-	OPERATION op;
-	OPERATION op_next;
+	PRODUIT_TYPE type; // Indique le type de produit en création
+	OPERATION op; // Dernière opération effectuée sur le produit
 };
-
+struct case
+{
+	union{
+		COMPOSANT c;
+		PRODUIT d;
+	}contenu;
+	CASE_TYPE t;
+};
 #endif
