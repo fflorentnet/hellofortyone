@@ -1,3 +1,0 @@
-#include <composant.h>
-//pipi
-
