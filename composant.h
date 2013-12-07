@@ -1,13 +1,14 @@
-#ifndef PRODUIT_H
-#define PRODUIT_H
+#ifndef COMPOSANT_H
+#define COMPOSANT_H
 
-enum COMPOSANT_TYPE {
+typedef enum {
 	C1,
 	C2,
 	C3,
 	C4
-};
-enum OPERATION {
+} COMPOSANT_TYPE;
+
+typedef enum {
 	INIT,
 	OP1,
 	OP2,
@@ -16,20 +17,27 @@ enum OPERATION {
 	OP5,
 	OP6,
 	FINI
-};
-enum PRODUIT_TYPE {
+} OPERATION;
+
+typedef enum {
 	P1,
 	P2,
 	P3,
 	P4
-};
-struct COMPOSANT {
+} PRODUIT_TYPE;
+
+typedef struct {
 	COMPOSANT_TYPE type;
-};
-struct PRODUIT {
+} COMPOSANT;
+
+typedef struct {
 	PRODUIT_TYPE type;
 	OPERATION op;
 	OPERATION op_next;
-};
+} PRODUIT;
+
+typedef struct {
+	OPERATION op;
+} ROBOT;
 
 #endif
