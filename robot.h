@@ -3,8 +3,4 @@
 
 void* initRobot(void* r);
 
-struct ROBOT {
-	OPERATION op;
-	CASE* cs;
-};
 #endif

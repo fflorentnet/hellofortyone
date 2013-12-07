@@ -1,6 +1,4 @@
 #include "robot.h"
-
-
-void routineRobot(ROBOT* r)
+void* initRobot(void* r)
 {
 }
