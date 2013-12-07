@@ -52,4 +52,5 @@ typedef struct
 typedef struct {
 	OPERATION op;
 } ROBOT;
+
 #endif
