@@ -7,4 +7,6 @@ struct ROBOT {
 	OPERATION op;
 };
 
+//modif
+
 #endif
