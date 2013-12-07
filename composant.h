@@ -30,7 +30,17 @@ typedef struct {
 	COMPOSANT_TYPE type;
 } COMPOSANT;
 
-typedef struct 
+typedef struct {
+	PRODUIT_TYPE type;
+	OPERATION op;
+	OPERATION op_next;
+} PRODUIT;
+typedef enum {
+	PRDT,
+	CMPSNT
+} CASE_TYPE;
+
+typedef struct
 {
 	union{
 		COMPOSANT c;
@@ -38,12 +48,6 @@ typedef struct
 	}contenu;
 	CASE_TYPE t;
 } CASE;
-
-typedef struct {
-	PRODUIT_TYPE type;
-	OPERATION op;
-	OPERATION op_next;
-} PRODUIT;
 
 typedef struct {
 	OPERATION op;
