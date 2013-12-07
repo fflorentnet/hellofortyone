@@ -17,7 +17,7 @@ pthread_attr_t attr; // thread attribute
 
 void createThread(pthread_t t, ROBOT* r) {
 	if (pthread_create(&t, &attr, initRobot, (void *) r) < 0) {
-		fprintf (stderr, "pthread_create error\n");
+		fprintf (stdout, "pthread_create error\n");
 		exit (1);
 	}
 }
@@ -29,6 +29,7 @@ int main() {
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 	
 	ROBOT r;
+	r.op = OP1;
 	createThread(robot[0], &r);
 
 }
