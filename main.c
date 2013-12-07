@@ -10,21 +10,14 @@
 
 #define NBROBOT 6
 
+void createThread(pthread_t t, ROBOT r) {
 
-
-void* afficheEtat(void* rien)
-{
-	printf("test ta mère");
-}
-
-void createThread(pthread_t t, ROBOT* r) {
-
-pthread_attr_t attr; // thread attribute
+	pthread_attr_t attr; // thread attribute
 	if (pthread_attr_init (&attr) != 0) {
 		fprintf (stdout, "pthread_attr_init error");
 		exit (1);
 	}
-	if (pthread_create(&t, &attr, afficheEtat, NULL) != 0) {
+	if (pthread_create(&t, &attr, initRobot, (void*)&r) != 0) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
@@ -36,10 +29,10 @@ int main() {
 
 //	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 	
-pthread_t robot[NBROBOT];
+pthread_t robot;
 	ROBOT r;
 	r.op = OP1;
-	createThread(robot[0], &r);
+	createThread(robot, r);
 	return (EXIT_SUCCESS);
 }
 
