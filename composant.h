@@ -1,7 +1,6 @@
 #ifndef COMPOSANT_H
 #define COMPOSANT_H
 
-<<<<<<< HEAD
 
 
 enum CASE_TYPE{
@@ -9,9 +8,7 @@ enum CASE_TYPE{
 	COMPOSANT
 };
 enum COMPOSANT_TYPE {
-=======
 typedef enum {
->>>>>>> d34997c1fd32550616b7da249b9e010360c271dd
 	C1,
 	C2,
 	C3,
@@ -38,7 +35,6 @@ typedef enum {
 
 typedef struct {
 	COMPOSANT_TYPE type;
-<<<<<<< HEAD
 };
 struct PRODUIT {
 	PRODUIT_TYPE type; // Indique le type de produit en création
@@ -52,7 +48,6 @@ struct case
 	}contenu;
 	CASE_TYPE t;
 };
-=======
 } COMPOSANT;
 
 typedef struct {
@@ -64,6 +59,4 @@ typedef struct {
 typedef struct {
 	OPERATION op;
 } ROBOT;
-
->>>>>>> d34997c1fd32550616b7da249b9e010360c271dd
 #endif
