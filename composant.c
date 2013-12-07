@@ -1,5 +1,5 @@
 #include <composant.h>
-
+//caca
 enum COMPOSANT_TYPE {
 	C1,
 	C2,
