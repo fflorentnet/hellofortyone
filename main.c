@@ -15,7 +15,7 @@ void createThread(pthread_t t, ROBOT* r) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
-	pthread_join(t,NULL);
+	//pthread_join(t,NULL);
 }
 
 int main() {
@@ -31,6 +31,7 @@ int main() {
 	int i = 0;
 	for (i = 0;i<NBROBOT;i++)
 		createThread(robot[i], &r[i]);
+	while(1);
 	exit (EXIT_SUCCESS);
 }
 

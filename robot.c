@@ -4,7 +4,8 @@
 #include <stdlib.h>
 void* initRobot(void* r)
 {
-	fflush(stdout);
+	
+	sleep(10);
 	switch( ((ROBOT*)r)->op)
 	{
 		case OP1: printf("Je fais l'operation 1\n"); break;
