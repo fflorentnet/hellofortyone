@@ -7,6 +7,7 @@
 #include "composant.h"
 #include "robot.h"
 #define NBROBOT 6
+pthread_mutex_t mutex;
 
 void createThread(pthread_t t, ROBOT* r) {
 	int val;
