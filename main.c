@@ -19,10 +19,6 @@ void createThread(pthread_t t, ROBOT* r) {
 }
 
 int main() {
-
-	// set thread detachstate attribute to DETACHED 
-setbuf(stdout,NULL);
-setbuf(stderr,NULL);
 	pthread_t robot[NBROBOT];
 	ROBOT r[NBROBOT];
 	r[0].op = OP1;
