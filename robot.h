@@ -2,6 +2,11 @@
 #define ROBOT_H
 #include <stdlib.h>
 #include <stdio.h>
-void* initRobot(void* r);
 
+#define NBROBOT 6
+#define TAILLEANNEAU 16
+
+void* initRobot(void* r);
+void checkAnneau();
+void* anneau(void* data);
 #endif

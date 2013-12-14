@@ -2,12 +2,22 @@
 #include "composant.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+pthread_mutex_t mutex;
+
+int p = 0;
 void* initRobot(void* r)
 {
-	while(1)
-	{
+		while(1)
+		{
+
+		usleep(200000);
 		pthread_mutex_lock(&mutex);
-		sleep(2);
+				
+
+		if (p < NBROBOT)
+		{
+		p++;
 		switch( ((ROBOT*)r)->op)
 		{
 			case OP1: printf("Je fais l'operation 1\n"); break;
@@ -19,8 +29,31 @@ void* initRobot(void* r)
 
 			default: printf("Je n'ai pas d'opération :(\n"); break;
 		}
+	}
+
 		pthread_mutex_unlock(&mutex);
 	}
-	pthread_exit(EXIT_SUCCESS);
+	while(1);
 }
-
+void checkAnneau()
+{
+	pthread_mutex_lock(&mutex);
+	if (p >= NBROBOT)
+	{
+		printf("Robots ok!  %d\n",p);
+		p=0;
+	}
+	else
+	{
+		printf("Attente des robots...\n");
+	}
+	pthread_mutex_unlock(&mutex);
+}
+void* anneau(void* data)
+{
+	while(1)
+	{
+		checkAnneau();
+		usleep(200000);
+	}
+}
