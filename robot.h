@@ -4,11 +4,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "global.h"
+
 #define NBROBOT 6
 #define TAILLEANNEAU 16
-
-volatile pthread_mutex_t mutex;
-volatile int nbRobotOK;
 
 void* initRobot(void* r);
 void checkAnneau();

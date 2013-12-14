@@ -2,6 +2,7 @@
 #include "composant.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 void* initRobot(void* r)
 {
 	while(1)
