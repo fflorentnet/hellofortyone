@@ -8,8 +8,8 @@ pthread_mutex_t mutex;
 int p = 0;
 void* initRobot(void* r)
 {
-		while(1)
-		{
+	while(1)
+	{
 
 		usleep(200000);
 		pthread_mutex_lock(&mutex);
