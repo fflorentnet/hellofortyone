@@ -3,10 +3,11 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
-
 #include "composant.h"
-#include "robot.h"
 #include "anneau.h"
+
+#include "robot.h"
+
 
 void createThread(pthread_t t, ROBOT* r) {
 	int val;

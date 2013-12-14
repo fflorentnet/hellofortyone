@@ -2,11 +2,6 @@
 #include "composant.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-pthread_mutex_t mutex;
-
-int nbRobotOK = 0;
-
 void* initRobot(void* r)
 {
 	while(1)
@@ -29,6 +24,7 @@ void* initRobot(void* r)
 
 				default: printf("Je n'ai pas d'opération :(\n"); break;
 			}
+			printf("\t%d\n",nbRobotOK);
 		}
 
 		pthread_mutex_unlock(&mutex);

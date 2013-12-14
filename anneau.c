@@ -1,11 +1,13 @@
+#include "anneau.h"
 #include "robot.h"
 #include "composant.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 void checkAnneau()
 {
+	
 	pthread_mutex_lock(&mutex);
+
 	if (nbRobotOK >= NBROBOT)
 	{
 		printf("%d robots sont ok!  \n", nbRobotOK);
@@ -19,6 +21,7 @@ void checkAnneau()
 }
 void* anneau(void* data)
 {
+	
 	while(1)
 	{
 		checkAnneau();
