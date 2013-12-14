@@ -12,8 +12,8 @@ void createThread(pthread_t t, ROBOT* r) {
 	int val;
 	pthread_attr_t attr; // thread attribute
     if (pthread_attr_init (&attr) != 0) {
-            fprintf (stdout, "pthread_attr_init error");
-            exit (1);
+        fprintf (stdout, "pthread_attr_init error");
+        exit (1);
     }
 	if ((val = pthread_create(&t, &attr, initRobot, (void*) r)) != 0) {
 		printf ("pthread_create error\n");
@@ -39,8 +39,9 @@ int main() {
 	}
            
 	int i = 0;
-	for (i = 0;i<NBROBOT;i++)
+	for (i = 0;i<NBROBOT;i++) {
 		createThread(robot[i], &r[i]);
+	}
 	
 	if ((pthread_create(&anneau_t, &attr, anneau, NULL)) != 0) {
 		printf ("pthread_create error\n");
