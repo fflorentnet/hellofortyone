@@ -1,8 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "anneau.h"
 #include "robot.h"
 #include "composant.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 void checkAnneau()
 {
 	

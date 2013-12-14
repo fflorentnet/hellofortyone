@@ -1,7 +1,8 @@
-#include "robot.h"
-#include "composant.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "robot.h"
+#include "composant.h"
 
 void* initRobot(void* r)
 {
