@@ -6,14 +6,15 @@
 
 #include "composant.h"
 #include "robot.h"
+#include "anneau.h"
 
 void createThread(pthread_t t, ROBOT* r) {
 	int val;
-pthread_attr_t attr; // thread attribute
-        if (pthread_attr_init (&attr) != 0) {
-                fprintf (stdout, "pthread_attr_init error");
-                exit (1);
-        }
+	pthread_attr_t attr; // thread attribute
+    if (pthread_attr_init (&attr) != 0) {
+            fprintf (stdout, "pthread_attr_init error");
+            exit (1);
+    }
 	if ((val = pthread_create(&t, &attr, initRobot, (void*) r)) != 0) {
 		printf ("pthread_create error\n");
 		exit (1);
@@ -32,9 +33,9 @@ int main() {
 	r[4].op = OP5;
 	r[5].op = OP6;
 	
-pthread_attr_t attr; // thread attribute
-        if (pthread_attr_init (&attr) != 0) {
-                fprintf (stdout, "pthread_attr_init error");
+	pthread_attr_t attr; // thread attribute
+    if (pthread_attr_init (&attr) != 0) {
+		fprintf (stdout, "pthread_attr_init error");
 	}
            
 	int i = 0;
@@ -45,6 +46,7 @@ pthread_attr_t attr; // thread attribute
 		printf ("pthread_create error\n");
 		exit (1);
 	}
+
 	while(1);
 	exit (EXIT_SUCCESS);
 }
