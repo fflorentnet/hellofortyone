@@ -9,8 +9,6 @@
 #define NBROBOT 6
 #define TAILLEANNEAU 16
 
-void* initRobot(void* r);
-void checkAnneau();
-void* anneau(void* data);
+void* cycleRobot(void* r);
 
 #endif

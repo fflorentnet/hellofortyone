@@ -2,10 +2,10 @@
 #define GLOBAL_H
 
 #define TAILLEANNEAU 16
+#include "composant.h"
 
-/* Variables globales */
 volatile pthread_mutex_t mutex;
 volatile int nbRobotOK;
-volatile CASE[TAILLEANNEAU] tapis;
+volatile CASE* tapis;
 
 #endif
