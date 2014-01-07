@@ -1,6 +1,12 @@
 #ifndef COMPOSANT_H
 #define COMPOSANT_H
 
+typedef enum {
+	TRUE,
+	FALSE
+} boolean;
+
+
 // Enum Composant_Type : liste les types de composants
 typedef enum {
 	C1,
@@ -65,7 +71,8 @@ typedef struct ROBOT {
 	OPERATION op;
 	int pos;
 	int composant;
-	PRODUIT* enCours;
+	PRODUIT enCours;
+	boolean produitEnCours;
 } ROBOT;
 
 #endif

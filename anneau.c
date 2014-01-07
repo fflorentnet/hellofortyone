@@ -52,19 +52,17 @@ void checkAnneau()
 	if (nbRobotOK >= NBROBOT)
 	{
 		//printf("bump  \n", nbRobotOK);
-		
-		CASE caseTemp = tapis[0];
-		if (caseTemp.t == PRDT) //SORTIE : verification que le produit est fini
+		if (COMPTEUR_COMPOSANT[0] == 0 && COMPTEUR_COMPOSANT[1] == 0 &&	COMPTEUR_COMPOSANT[2] == 0 && COMPTEUR_COMPOSANT[3] == 0)
+			printf("Plus de composant.\n");
+
+		if (tapis[0].t == PRDT) //SORTIE : verification que le produit est fini
 		{
-			int ope = (sizeof(caseTemp.contenu.p.listeOperation)/sizeof(OPERATION));
-			printf("->%d\n",ope);
-	//		OPERATION ppp = caseTemp.contenu.p.listeOperation[ope-1];
-			/*if (caseTemp.contenu.p.listeOperation[ope-1] == FINI)
+			int ope = (sizeof(tapis[0].contenu.p.listeOperation)/sizeof(OPERATION));
+			
+			if (tapis[0].contenu.p.listeOperation[ope-1] == FINI)
 			{
-				//printf("Un produit vient de sortir\n");
-				caseTemp.t = VIDE;
-				tapis[0] = caseTemp;
-			}*/
+				tapis[0].t = VIDE;
+			}
 
 		}
 		tournerRoue();
@@ -121,6 +119,7 @@ void checkAnneau()
 	}
 	else
 	{
+
 		//printf("Attente des robots...\n");
 	}
 	pthread_mutex_unlock(&mutex);
@@ -133,6 +132,6 @@ void* cycleAnneau(void* data)
 	while(1)
 	{
 		checkAnneau();
-		usleep(20000);
+		usleep(200000);
 	}
 }

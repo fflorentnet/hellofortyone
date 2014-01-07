@@ -10,7 +10,8 @@
 #define TAILLEANNEAU 16
 
 OPERATION opeSuivante(PRODUIT* p);
-PRODUIT addOpe(PRODUIT p, OPERATION op);
+void addOpe(PRODUIT* p, OPERATION op);
 void* cycleRobot(void* r);
+void printOp(OPERATION o);
 
 #endif
