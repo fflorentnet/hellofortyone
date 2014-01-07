@@ -39,8 +39,7 @@ typedef struct COMPOSANT {
 // sa derniere operation ainsi que l'operation a venir
 typedef struct PRODUIT {
 	PRODUIT_TYPE type;
-	OPERATION op;
-	OPERATION op_next;
+	OPERATION* listeOperation;
 } PRODUIT;
 
 // Enum Case_Type : contient l'etat de la case
@@ -56,7 +55,7 @@ typedef struct CASE
 {
 	union{
 		COMPOSANT c;
-		PRODUIT d;
+		PRODUIT p;
 	}contenu;
 	CASE_TYPE t;
 } CASE;
@@ -64,6 +63,9 @@ typedef struct CASE
 // Struct Robot : liste les opérations des robots
 typedef struct ROBOT {
 	OPERATION op;
+	int pos;
+	int composant;
+	PRODUIT* enCours;
 } ROBOT;
 
 #endif
