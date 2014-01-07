@@ -9,7 +9,7 @@
 #define TAILLEANNEAU 16
 
 void checkAnneau();
-void* anneau(void* data);
+void* cycleAnneau(void* data);
 void initAnneau();
 
 #endif

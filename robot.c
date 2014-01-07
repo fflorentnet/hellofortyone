@@ -4,7 +4,7 @@
 #include "robot.h"
 #include "composant.h"
 
-void* initRobot(void* r)
+void* cycleRobot(void* r)
 {
 	while(1)
 	{

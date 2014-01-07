@@ -4,7 +4,7 @@
 #include "anneau.h"
 #include "robot.h"
 
-
+// Initialisation de l'anneau
 void initAnneau()
 {
 	int i=0;
@@ -17,6 +17,7 @@ void initAnneau()
 	}
 }
 
+// Attend que chaque robot ait effectue son operation
 void checkAnneau()
 {
 	
@@ -33,7 +34,9 @@ void checkAnneau()
 	}
 	pthread_mutex_unlock(&mutex);
 }
-void* anneau(void* data)
+
+// Cycle du thread anneau
+void* cycleAnneau(void* data)
 {
 	initAnneau();	
 	while(1)

@@ -1,6 +1,7 @@
 #ifndef COMPOSANT_H
 #define COMPOSANT_H
 
+// Enum Composant_Type : liste les types de composants
 typedef enum {
 	C1,
 	C2,
@@ -8,6 +9,8 @@ typedef enum {
 	C4
 } COMPOSANT_TYPE;
 
+// Enum Operation : liste les etats d'un produit
+// et correspond a l'operation qu'effectue un robot
 typedef enum {
 	INIT,
 	OP1,
@@ -19,6 +22,7 @@ typedef enum {
 	FINI
 } OPERATION;
 
+// Enum Produit_Type : liste les produits
 typedef enum {
 	P1,
 	P2,
@@ -26,21 +30,28 @@ typedef enum {
 	P4
 } PRODUIT_TYPE;
 
+// Struct Composant : contient le type du composant
 typedef struct COMPOSANT {
 	COMPOSANT_TYPE type;
 } COMPOSANT;
 
+// Struct Produit : contient le type du produit,
+// sa derniere operation ainsi que l'operation a venir
 typedef struct PRODUIT {
 	PRODUIT_TYPE type;
 	OPERATION op;
 	OPERATION op_next;
 } PRODUIT;
+
+// Enum Case_Type : contient l'etat de la case
 typedef enum {
 	PRDT,
 	CMPSNT,
 	VIDE
 } CASE_TYPE;
 
+// Struct Case : contient l'etat de la case,
+// ainsi que le produit OU le composant sur la case
 typedef struct CASE
 {
 	union{
@@ -50,6 +61,7 @@ typedef struct CASE
 	CASE_TYPE t;
 } CASE;
 
+// Struct Robot : liste les opérations des robots
 typedef struct ROBOT {
 	OPERATION op;
 } ROBOT;

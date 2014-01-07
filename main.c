@@ -11,11 +11,12 @@
 void createThread(pthread_t t, ROBOT* r) {
 	int val;
 	pthread_attr_t attr; // thread attribute
+
     if (pthread_attr_init (&attr) != 0) {
         fprintf (stdout, "pthread_attr_init error");
         exit (1);
     }
-	if ((val = pthread_create(&t, &attr, initRobot, (void*) r)) != 0) {
+	if ((val = pthread_create(&t, &attr, cycleRobot, (void*) r)) != 0) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
@@ -23,9 +24,11 @@ void createThread(pthread_t t, ROBOT* r) {
 }
 
 int main() {
+	int i = 0;
 	pthread_t robot[NBROBOT];
 	pthread_t anneau_t;
-	ROBOT r[NBROBOT];
+
+	ROBOT r[NBROBOT]; // 
 	r[0].op = OP1;
 	r[1].op = OP2;
 	r[2].op = OP3;
@@ -38,12 +41,13 @@ int main() {
 		fprintf (stdout, "pthread_attr_init error");
 	}
            
-	int i = 0;
+	/* Creation thread des Robots */
 	for (i = 0;i<NBROBOT;i++) {
 		createThread(robot[i], &r[i]);
 	}
-	
-	if ((pthread_create(&anneau_t, &attr, anneau, NULL)) != 0) {
+
+	/* Creation du thread de l'anneau */	
+	if ((pthread_create(&anneau_t, &attr, cycleAnneau, NULL)) != 0) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
