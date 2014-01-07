@@ -6,45 +6,43 @@
 
 OPERATION opeSuivante(PRODUIT* p)
 {
-	OPERATION op;
+	OPERATION op = FINI;
 	int nbOpe = (sizeof(p->listeOperation)/sizeof(OPERATION));
-
-	if (p->type == P1)
+	if (p->listeOperation[nbOpe-1] != FINI)
 	{
-		if (p->listeOperation[nbOpe+1] != FINI)
+		if (p->type == P1)
 		{
 			op = SEQUENCE_PRODUIT_UN[nbOpe];
 		}
-	}
-	else if (p->type == P2)
-	{
-		if (p->listeOperation[nbOpe+1] != FINI)
+		else if (p->type == P2)
 		{
 			op = SEQUENCE_PRODUIT_DEUX[nbOpe];
-		}		
-	}
-	else if (p->type == P3)
-	{
-		if (p->listeOperation[nbOpe+1] != FINI)
+	
+		}
+		else if (p->type == P3)
 		{
 			op = SEQUENCE_PRODUIT_TROIS[nbOpe];
-		}		
+			
+		}
+		else
+		{
+			op = SEQUENCE_PRODUIT_QUATRE[nbOpe];
+	
+		}
 	}
 	else
 	{
-		if (p->listeOperation[nbOpe+1] != FINI)
-		{
-			op = SEQUENCE_PRODUIT_QUATRE[nbOpe];
-		}		
+		printf("Le produit est fini\n");
 	}
 	return op;
 }
 
-void addOpe(PRODUIT* p, OPERATION op)
+PRODUIT addOpe(PRODUIT p, OPERATION op)
 {
-	p->listeOperation = (OPERATION*)malloc(sizeof(OPERATION)*(sizeof(p->listeOperation)+1));
-	int nbOpe = sizeof(p->listeOperation)/sizeof(OPERATION)-1;
-	p->listeOperation[nbOpe] = op;
+	p.listeOperation = (OPERATION*) realloc(p.listeOperation,sizeof(OPERATION)*( sizeof(p.listeOperation)+1 ) );
+	int nbOpe = (sizeof(p.listeOperation)/sizeof(OPERATION))-1;
+	p.listeOperation[nbOpe] = op;
+	return p;
 }
 void* cycleRobot(void* r)
 {
@@ -68,8 +66,9 @@ void* cycleRobot(void* r)
 	    {
 		if ((((ROBOT*)r)->enCours) != NULL)
 		{
+			PRODUIT pp = *(((ROBOT*)r)->enCours);
 			c.t = PRDT;
-			c.contenu.p = *(((ROBOT*)r)->enCours);
+			c.contenu.p = pp;
 			tapis[posTapis]=c;
 		}
 	    }
@@ -78,13 +77,14 @@ void* cycleRobot(void* r)
 	    {
 	    	if (((ROBOT*)r)->enCours == NULL)
 	    	{
-	    		printf("La case contient un produit\n");
+	    		//printf("La case contient un produit\n");
 				OPERATION nextOp = opeSuivante(&(c.contenu.p));
 
 				if (nextOp == ((ROBOT*)r)->op)
 				{
+						addOpe(c.contenu.p, nextOp);
 						((ROBOT*)r)->enCours = &(c.contenu.p);
-						addOpe(&(c.contenu.p), nextOp);
+						
 						c.t = VIDE;
 						tapis[posTapis] = c;
 				}
@@ -139,7 +139,7 @@ void* cycleRobot(void* r)
 			case OP1: 
 				 if (((ROBOT*)r)->composant >= NB_COMPOSANT_UN)
 				 {
-		 	    	printf("Je crée un produit\n");
+		 	    	printf("Je crée un produit P1\n");
 	    			prodTemp.listeOperation = (OPERATION*)malloc(1*sizeof(OPERATION));
 					(prodTemp.listeOperation)[0] = INIT;
 				 	prodTemp.type = P1;
@@ -149,7 +149,7 @@ void* cycleRobot(void* r)
 			case OP2: 
 			  if (((ROBOT*)r)->composant >= NB_COMPOSANT_DEUX)
 				 {
-				 	 printf("Je crée un produit\n");
+				 	 printf("Je crée un produit P2\n");
 					prodTemp.listeOperation = (OPERATION*)malloc(1*sizeof(OPERATION));
 					(prodTemp.listeOperation)[0] = INIT;
 					prodTemp.type = P2;
@@ -159,7 +159,7 @@ void* cycleRobot(void* r)
 			case OP3:
 			  if (((ROBOT*)r)->composant >= NB_COMPOSANT_TROIS)
 				 {
-		 	    	printf("Je crée un produit\n");
+		 	    	printf("Je crée un produit P3\n");
     				prodTemp.listeOperation = (OPERATION*)malloc(1*sizeof(OPERATION));
 					(prodTemp.listeOperation)[0] = INIT;
 				 	prodTemp.type = P3;
@@ -169,7 +169,7 @@ void* cycleRobot(void* r)
 			case OP4:
 			 if (((ROBOT*)r)->composant >= NB_COMPOSANT_QUATRE)
 				 {
-		 	    	printf("Je crée un produit\n");
+		 	    	printf("Je crée un produit P4\n");
 	    			prodTemp.listeOperation = (OPERATION*)malloc(1*sizeof(OPERATION));
 					(prodTemp.listeOperation)[0] = INIT;
 				 	prodTemp.type = P4;

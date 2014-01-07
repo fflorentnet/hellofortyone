@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <time.h> // fonction srand + ctime
+
 #include "composant.h"
 #include "anneau.h"
 #include "robot.h"
@@ -44,6 +47,7 @@ void checkAnneau()
 {
 	int b = 0;
 	pthread_mutex_lock(&mutex);
+	int random;
 
 	if (nbRobotOK >= NBROBOT)
 	{
@@ -52,23 +56,29 @@ void checkAnneau()
 		CASE caseTemp = tapis[0];
 		if (caseTemp.t == PRDT) //SORTIE : verification que le produit est fini
 		{
-			if (caseTemp.contenu.p.listeOperation[(sizeof(caseTemp.contenu.p.listeOperation)/sizeof(OPERATION))-1] == FINI)
+			int ope = (sizeof(caseTemp.contenu.p.listeOperation)/sizeof(OPERATION));
+			printf("->%d\n",ope);
+	//		OPERATION ppp = caseTemp.contenu.p.listeOperation[ope-1];
+			/*if (caseTemp.contenu.p.listeOperation[ope-1] == FINI)
 			{
-				printf("Un produit vient de sortir\n");
+				//printf("Un produit vient de sortir\n");
 				caseTemp.t = VIDE;
 				tapis[0] = caseTemp;
-			}
+			}*/
+
 		}
 		tournerRoue();
 		
-		if (tapis[1].t == VIDE)
+		if (tapis[1].t == VIDE) 
 		{
 			//printf("La case est vide !\n");
 			COMPOSANT tempComposant;
 			
 			do
 			{
-				int random = ((double) rand() / RAND_MAX) * (MAX_R-MIN_R+1)+MIN_R;
+				//srand(time(0));
+				random = rand() % 5 + 1;
+
 				if (random < 5)
 				{
 					if (COMPTEUR_COMPOSANT[random-1] > 0)
