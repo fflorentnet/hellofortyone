@@ -10,5 +10,6 @@
 
 void checkAnneau();
 void* anneau(void* data);
+void initAnneau();
 
 #endif

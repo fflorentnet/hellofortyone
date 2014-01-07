@@ -26,21 +26,22 @@ typedef enum {
 	P4
 } PRODUIT_TYPE;
 
-typedef struct {
+typedef struct COMPOSANT {
 	COMPOSANT_TYPE type;
 } COMPOSANT;
 
-typedef struct {
+typedef struct PRODUIT {
 	PRODUIT_TYPE type;
 	OPERATION op;
 	OPERATION op_next;
 } PRODUIT;
 typedef enum {
 	PRDT,
-	CMPSNT
+	CMPSNT,
+	VIDE
 } CASE_TYPE;
 
-typedef struct
+typedef struct CASE
 {
 	union{
 		COMPOSANT c;
@@ -49,7 +50,7 @@ typedef struct
 	CASE_TYPE t;
 } CASE;
 
-typedef struct {
+typedef struct ROBOT {
 	OPERATION op;
 } ROBOT;
 
