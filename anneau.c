@@ -71,7 +71,6 @@ void tournerRoue()
 	for(i=TAILLEANNEAU-1; i>0; i--) {
 		temp[i] = tapis[i-1];
 	}
-	
 	temp[0] = last;
     tapis = temp;
 }
@@ -170,4 +169,5 @@ void* cycleAnneau(void* data)
 		checkAnneau();
 		usleep(2000);
 	}
+	free(tapis);
 }
