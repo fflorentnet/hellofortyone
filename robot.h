@@ -11,6 +11,7 @@
 
 OPERATION opeSuivante(PRODUIT p);
 int printCom(COMPOSANT_TYPE ca);
+int printProd(PRODUIT_TYPE pr);
 void* cycleRobot(void* r);
 int printOp(OPERATION o);
 
