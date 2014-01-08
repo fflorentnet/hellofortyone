@@ -20,6 +20,8 @@ volatile int nbRobotOK;
 volatile CASE* tapis;
 volatile int* COMPTEUR_PRODUIT;
 volatile int DEMANDE_ROBOT;
+volatile int NB_PRODUIT_TOTAL;
+volatile int COMPTEUR_PROD;
 
 volatile OPERATION *SEQUENCE_PRODUIT_UN;
 volatile OPERATION *SEQUENCE_PRODUIT_DEUX;

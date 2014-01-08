@@ -52,11 +52,16 @@ void createThread(pthread_t t, ROBOT* r) {
         fprintf (stdout, "pthread_attr_init error");
         exit (1);
     }
+    if (pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED) != 0)
+    {
+    	printf("setdetachstate failed");
+    	exit(1);
+    }
 	if ((val = pthread_create(&t, &attr, cycleRobot, (void*) r)) != 0) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
-	//pthread_join(t,NULL);
+	pthread_join(&t,NULL);
 }
 
 int main() {
@@ -79,15 +84,24 @@ int main() {
 	r[5].op = OP6;
 	
 	DEMANDE_ROBOT = 0;
+	COMPTEUR_PROD = 0;
+	NB_PRODUIT_TOTAL = NB_PRODUIT_UN+NB_PRODUIT_DEUX+NB_PRODUIT_TROIS+NB_PRODUIT_QUATRE;
 	
 	initSegment();
 	pthread_attr_t attr; // thread attribute
     if (pthread_attr_init (&attr) != 0) {
 		fprintf (stdout, "pthread_attr_init error");
 	}
+	
+	    if (pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED) != 0)
+    {
+		fprintf (stdout, "setdetachstate failed");
+    	exit(1);
+    }
 	/* Creation thread des Robots */
 	for (i = 0;i<NBROBOT;i++) {
 		createThread(robot[i], &r[i]);
+		
 	}
 
 	/* Creation du thread de l'anneau */	
@@ -95,8 +109,7 @@ int main() {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
-
-	while(1);
-	exit (EXIT_SUCCESS);
+	
+	pthread_exit (EXIT_SUCCESS);
 }
 

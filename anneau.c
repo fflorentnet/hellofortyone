@@ -12,7 +12,6 @@
 #define MIN_R 1
 
 int* COMPTEUR_COMPOSANT; // nombre de composants restants
-int COMPTEUR_PROD;
 // Initialisation de l'anneau
 
 void affichageTapis()
@@ -38,7 +37,10 @@ void initAnneau()
 {
 	int i=0;
 	CASE ctemp;
-	COMPTEUR_PROD = 0; 
+
+	
+	
+	
 	COMPTEUR_COMPOSANT = (int*)malloc(sizeof(int)*4);
 	COMPTEUR_COMPOSANT[0] = NB_COMPOSANT_UN*NB_PRODUIT_UN;
 	COMPTEUR_COMPOSANT[1] = NB_COMPOSANT_DEUX*NB_PRODUIT_DEUX;
@@ -58,9 +60,20 @@ void initAnneau()
 
 void tournerRoue()
 {
-	CASE temp = tapis[TAILLEANNEAU - 1]; 
-	memmove(&tapis[1], tapis, (TAILLEANNEAU - 1) * sizeof(CASE));
-	tapis[0] = temp;
+	int i;
+
+	/*for(i=0; i<TAILLEANNEAU; i++) {
+		printf("Case %d : %d\n",i,tapis[i].t);
+	}*/
+
+	CASE* temp = (CASE*)malloc(sizeof(CASE)*TAILLEANNEAU); 
+	CASE last = tapis[TAILLEANNEAU-1];
+	for(i=TAILLEANNEAU-1; i>0; i--) {
+		temp[i] = tapis[i-1];
+	}
+	
+	temp[0] = last;
+    tapis = temp;
 }
 
 // Attend que chaque robot ait effectue son operation
@@ -152,7 +165,7 @@ void checkAnneau()
 void* cycleAnneau(void* data)
 {
 	initAnneau();	
-	while(1)
+	while(COMPTEUR_PROD != NB_PRODUIT_TOTAL)
 	{
 		checkAnneau();
 		usleep(2000);

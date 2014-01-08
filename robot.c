@@ -85,7 +85,7 @@ void* cycleRobot(void* r)
 
 	OPERATION opRobot = ((ROBOT*)r)->op;
 	
-	while(1)
+	while(COMPTEUR_PROD != NB_PRODUIT_TOTAL)
 	{
 		usleep(2000);
 		pthread_mutex_lock(&mutex);
@@ -244,4 +244,6 @@ void* cycleRobot(void* r)
 		}
 		pthread_mutex_unlock(&mutex);
 	}
+	printf("Le robot s'eteint.\n");
+	pthread_exit(NULL);
 }
