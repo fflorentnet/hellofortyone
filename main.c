@@ -61,7 +61,7 @@ void createThread(pthread_t t, ROBOT* r) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
-	pthread_join(&t,NULL);
+	pthread_join(t,NULL);
 }
 
 int main() {

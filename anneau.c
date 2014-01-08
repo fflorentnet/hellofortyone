@@ -169,5 +169,5 @@ void* cycleAnneau(void* data)
 		checkAnneau();
 		usleep(2000);
 	}
-	free(tapis);
+	free((void*) tapis);
 }
