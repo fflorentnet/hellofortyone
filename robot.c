@@ -4,31 +4,224 @@
 #include "robot.h"
 #include "composant.h"
 
+int printCom(COMPOSANT_TYPE co)
+{
+	int c = -1;
+	switch(co)
+	{
+		case C1: c=1; break;
+		case C2: c=2; break;
+		case C3: c=3; break;
+		case C4: c=4; break;
+		default: break;
+	}
+	
+	return c;
+}
+int printOp(OPERATION op)
+{
+	int c = -1;
+	switch(op)
+	{
+		case INIT: c=100; break;
+		case OP1: c=1; break;
+		case OP2: c=2; break;
+		case OP3: c=3; break;
+		case OP4: c=4; break;
+		case OP5: c=5; break;
+		case OP6: c=6; break;
+		case FINI: c=0; break;
+		default: break;
+	}
+	
+	return c;
+}
+
+OPERATION opeSuivante(PRODUIT p)
+{
+	OPERATION op = FINI;
+	int nbOpe = p.rangOperation;
+	//printf("Rang de l'operation:%d\n",nbOpe);
+	if (p.operation != FINI)
+	{
+		if (p.type == P1)
+		{
+			op = SEQUENCE_PRODUIT_UN[nbOpe];
+		}
+		else if (p.type == P2)
+		{
+			op = SEQUENCE_PRODUIT_DEUX[nbOpe];
+		}
+		else if (p.type == P3)
+		{
+			op = SEQUENCE_PRODUIT_TROIS[nbOpe];
+		}
+		else if (p.type == P4)
+		{
+			op = SEQUENCE_PRODUIT_QUATRE[nbOpe];
+		}
+	}
+	else
+	{
+		printf("Le produit est fini\n");
+	}
+	return op;
+}
 void* cycleRobot(void* r)
 {
+	int pos = ((ROBOT*)r)->pos;
+	int posTapis = 2*pos+1;
+
+	OPERATION opRobot = ((ROBOT*)r)->op;
+	
 	while(1)
 	{
-		usleep(200000);
+		usleep(20000);
 		pthread_mutex_lock(&mutex);
-				
-
+		printf("-------------\n");
+		printf("Je suis le robot %d et mon operation est la %d\n", pos, opRobot);
 		if (nbRobotOK < NBROBOT)
 		{
 			nbRobotOK++;
-			switch( ((ROBOT*)r)->op)
+
+			if (tapis[posTapis].t == PRDT) // la case contient un produit
 			{
-				case OP1: printf("Je fais l'operation 1\n"); break;
-				case OP2: printf("Je fais l'operation 2\n"); break;
-				case OP3: printf("Je fais l'operation 3\n"); break;
-				case OP4: printf("Je fais l'operation 4\n"); break;
-				case OP5: printf("Je fais l'operation 5\n"); break;
-				case OP6: printf("Je fais l'operation 6\n"); break;
-
-				default: printf("Je n'ai pas d'opération :(\n"); break;
+				printf("La case contient un produit\n");
+				if (((ROBOT*)r)->produitEnCours == FALSE)
+				{
+					printf("je ne possede pas de produit\n");
+					OPERATION nextOp = opeSuivante(tapis[posTapis].contenu.p);
+					
+					printf("Produit Prochaine op : %d\n",printOp(nextOp));
+					printf("Mon operation : %d\n", printOp(opRobot));
+					
+					if (printOp(nextOp) == printOp(opRobot))
+					{
+						//DEMANDE_ROBOT++;
+						printf("Ajout de la nouvelle operation\n");
+						//printOp(c.contenu.p.operation);
+						//printOp(nextOp);						
+						((ROBOT*)r)->enCours.operation = nextOp;
+						((ROBOT*)r)->enCours.rangOperation = tapis[posTapis].contenu.p.rangOperation+1;
+						tapis[posTapis].t = VIDE;
+					}
+				}
 			}
-			printf("\t%d\n",nbRobotOK);
+			else
+			{
+				if (tapis[posTapis].t == VIDE) // la case est vide
+				{
+					printf("La case est vide\n");
+					if ((((ROBOT*)r)->produitEnCours) == TRUE)
+					{
+						printf("je possede un produit\n");
+						tapis[posTapis].contenu.p.operation = ((ROBOT*)r)->enCours.operation;
+						tapis[posTapis].contenu.p.rangOperation = ((ROBOT*)r)->enCours.rangOperation;
+						tapis[posTapis].contenu.p.type = ((ROBOT*)r)->enCours.type;
+						tapis[posTapis].t = PRDT;
+						DEMANDE_ROBOT--;
+						((ROBOT*)r)->produitEnCours = FALSE;
+					}
+				}
+			
+				else if (tapis[posTapis].t == CMPSNT) // la case contient un composant
+				{
+					//printf("Je recupere un composant\n");
+					switch(opRobot)
+					{
+					case OP1: 
+						if (tapis[posTapis].contenu.c.type == C1)
+						{
+							((ROBOT*)r)->composant = ((ROBOT*)r)->composant+1;
+							tapis[posTapis].t = VIDE;
+						}
+						break;
+					case OP2: 
+						if (tapis[posTapis].contenu.c.type == C2)
+						{
+							((ROBOT*)r)->composant = ((ROBOT*)r)->composant+1;
+							tapis[posTapis].t = VIDE;
+						}
+						break;
+					case OP3:
+						if (tapis[posTapis].contenu.c.type == C3)
+						{
+							((ROBOT*)r)->composant = ((ROBOT*)r)->composant+1;
+							tapis[posTapis].t = VIDE;
+						}
+						break;
+					case OP4:
+						if (tapis[posTapis].contenu.c.type == C4)
+						{
+							((ROBOT*)r)->composant = ((ROBOT*)r)->composant+1;
+							tapis[posTapis].t = VIDE;
+						}
+						break;
+					default: break;
+					}
+				}
+				if (DEMANDE_ROBOT == 0)
+				{
+					if (((ROBOT*)r)->produitEnCours == FALSE)
+					{
+						printf("je ne possede pas de produit\n");
+						switch(opRobot)
+						{
+							case OP1: 
+								if (((ROBOT*)r)->composant >= NB_COMPOSANT_UN)
+								{
+									//printf("Je crée un produit P1\n");
+									((ROBOT*)r)->enCours.operation=INIT;
+									((ROBOT*)r)->enCours.rangOperation = 0;
+									((ROBOT*)r)->enCours.type = P1;
+									((ROBOT*)r)->produitEnCours = TRUE;
+									((ROBOT*)r)->composant = ((ROBOT*)r)->composant - NB_COMPOSANT_UN;
+									DEMANDE_ROBOT++;
+								}
+								break;
+							case OP2: 
+								if (((ROBOT*)r)->composant >= NB_COMPOSANT_DEUX)
+								{
+									//printf("Je crée un produit P2\n");
+									((ROBOT*)r)->enCours.operation=INIT;
+									((ROBOT*)r)->enCours.rangOperation = 0;
+									((ROBOT*)r)->enCours.type = P2;
+									((ROBOT*)r)->produitEnCours = TRUE;
+									((ROBOT*)r)->composant = ((ROBOT*)r)->composant - NB_COMPOSANT_DEUX;
+									DEMANDE_ROBOT++;
+								}
+								break;
+							case OP3:
+								if (((ROBOT*)r)->composant >= NB_COMPOSANT_TROIS)
+								{
+									//printf("Je crée un produit P3\n");
+									((ROBOT*)r)->enCours.operation=INIT;
+									((ROBOT*)r)->enCours.rangOperation = 0;
+									((ROBOT*)r)->enCours.type = P3;
+									((ROBOT*)r)->produitEnCours = TRUE;
+									((ROBOT*)r)->composant = ((ROBOT*)r)->composant - NB_COMPOSANT_TROIS;
+									DEMANDE_ROBOT++;
+								}
+								break;
+							case OP4:
+								if (((ROBOT*)r)->composant >= NB_COMPOSANT_QUATRE)
+								{
+								//	printf("Je crée un produit P4\n");
+									((ROBOT*)r)->enCours.operation=INIT;
+									((ROBOT*)r)->enCours.rangOperation = 0;
+									((ROBOT*)r)->enCours.type = P4;
+									((ROBOT*)r)->produitEnCours = TRUE;
+									((ROBOT*)r)->composant = ((ROBOT*)r)->composant - NB_COMPOSANT_QUATRE;
+									DEMANDE_ROBOT++;
+								}
+								break;
+							default: break;
+						}
+					}
+				}
+			}
+			
 		}
-
 		pthread_mutex_unlock(&mutex);
 	}
 }

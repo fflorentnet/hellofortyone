@@ -8,8 +8,10 @@
 
 #define TAILLEANNEAU 16
 
+
 void checkAnneau();
 void* cycleAnneau(void* data);
 void initAnneau();
+void tournerRoue();
 
 #endif

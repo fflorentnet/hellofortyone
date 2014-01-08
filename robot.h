@@ -9,6 +9,9 @@
 #define NBROBOT 6
 #define TAILLEANNEAU 16
 
+OPERATION opeSuivante(PRODUIT p);
+int printCom(COMPOSANT_TYPE ca);
 void* cycleRobot(void* r);
+int printOp(OPERATION o);
 
 #endif
