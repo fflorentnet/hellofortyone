@@ -15,7 +15,19 @@ int printCom(COMPOSANT_TYPE co)
 		case C4: c=4; break;
 		default: break;
 	}
-	
+	return c;
+}
+int printProd(PRODUIT_TYPE pr)
+{
+	int c = -1;
+	switch(pr)
+	{
+		case P1: c=1; break;
+		case P2: c=2; break;
+		case P3: c=3; break;
+		case P4: c=4; break;
+		default: break;
+	}
 	return c;
 }
 int printOp(OPERATION op)
@@ -30,10 +42,9 @@ int printOp(OPERATION op)
 		case OP4: c=4; break;
 		case OP5: c=5; break;
 		case OP6: c=6; break;
-		case FINI: c=0; break;
+		case FINI: c=-1; break;
 		default: break;
 	}
-	
 	return c;
 }
 
@@ -41,7 +52,7 @@ OPERATION opeSuivante(PRODUIT p)
 {
 	OPERATION op = FINI;
 	int nbOpe = p.rangOperation;
-	//printf("Rang de l'operation:%d\n",nbOpe);
+	printf("Rang de l'operation:%d\n",nbOpe);
 	if (p.operation != FINI)
 	{
 		if (p.type == P1)
@@ -76,33 +87,40 @@ void* cycleRobot(void* r)
 	
 	while(1)
 	{
-		usleep(20000);
+		usleep(2000);
 		pthread_mutex_lock(&mutex);
 		printf("-------------\n");
 		printf("Je suis le robot %d et mon operation est la %d\n", pos, opRobot);
 		if (nbRobotOK < NBROBOT)
 		{
 			nbRobotOK++;
-
+			if ((((ROBOT*)r)->produitEnCours) == TRUE)
+				printf("Je m'occupe d'un produit\n");
+			else
+				printf("Je ne m'occupe d'aucun produit\n");
+			
 			if (tapis[posTapis].t == PRDT) // la case contient un produit
 			{
+				if (opeSuivante(tapis[posTapis].contenu.p) == FINI)
+				{
+						tapis[posTapis].contenu.p.operation = FINI;
+						tapis[posTapis].contenu.p.rangOperation = ((ROBOT*)r)->enCours.rangOperation+1;
+				}
 				printf("La case contient un produit\n");
 				if (((ROBOT*)r)->produitEnCours == FALSE)
 				{
 					printf("je ne possede pas de produit\n");
 					OPERATION nextOp = opeSuivante(tapis[posTapis].contenu.p);
-					
-					printf("Produit Prochaine op : %d\n",printOp(nextOp));
-					printf("Mon operation : %d\n", printOp(opRobot));
-					
-					if (printOp(nextOp) == printOp(opRobot))
+					if (nextOp == opRobot)
 					{
-						//DEMANDE_ROBOT++;
+						DEMANDE_ROBOT++;
 						printf("Ajout de la nouvelle operation\n");
 						//printOp(c.contenu.p.operation);
 						//printOp(nextOp);						
 						((ROBOT*)r)->enCours.operation = nextOp;
 						((ROBOT*)r)->enCours.rangOperation = tapis[posTapis].contenu.p.rangOperation+1;
+						((ROBOT*)r)->enCours.type=tapis[posTapis].contenu.p.type;
+						((ROBOT*)r)->produitEnCours = TRUE;
 						tapis[posTapis].t = VIDE;
 					}
 				}
@@ -115,8 +133,11 @@ void* cycleRobot(void* r)
 					if ((((ROBOT*)r)->produitEnCours) == TRUE)
 					{
 						printf("je possede un produit\n");
+						
+						
 						tapis[posTapis].contenu.p.operation = ((ROBOT*)r)->enCours.operation;
 						tapis[posTapis].contenu.p.rangOperation = ((ROBOT*)r)->enCours.rangOperation;
+
 						tapis[posTapis].contenu.p.type = ((ROBOT*)r)->enCours.type;
 						tapis[posTapis].t = PRDT;
 						DEMANDE_ROBOT--;
@@ -220,7 +241,6 @@ void* cycleRobot(void* r)
 					}
 				}
 			}
-			
 		}
 		pthread_mutex_unlock(&mutex);
 	}
