@@ -10,6 +10,7 @@
 
 void initSegment()
 {
+	int i = 0;
 	SEQUENCE_PRODUIT_UN = (OPERATION*)malloc(sizeof(OPERATION)*5);
 	SEQUENCE_PRODUIT_DEUX = (OPERATION*)malloc(sizeof(OPERATION)*5);
 	SEQUENCE_PRODUIT_TROIS = (OPERATION*)malloc(sizeof(OPERATION)*6);
@@ -21,6 +22,7 @@ void initSegment()
 	SEQUENCE_PRODUIT_UN[2]=OP3;
 	SEQUENCE_PRODUIT_UN[3]=OP5;
 	SEQUENCE_PRODUIT_UN[4]=FINI;
+
 	
 	SEQUENCE_PRODUIT_DEUX[0] = OP2;
 	SEQUENCE_PRODUIT_DEUX[1] = OP4;
@@ -65,7 +67,7 @@ int main() {
 	ROBOT r[NBROBOT]; //
 	for (i = 1; i<=NBROBOT;i++)
 	{
-		r[i-1].pos = i*2+1; 
+		r[i-1].pos = i; 
 		r[i-1].composant = 0;
 		r[i-1].produitEnCours = FALSE;
 	}
@@ -75,12 +77,14 @@ int main() {
 	r[3].op = OP4;
 	r[4].op = OP5;
 	r[5].op = OP6;
+	
+	DEMANDE_ROBOT = 0;
+	
 	initSegment();
 	pthread_attr_t attr; // thread attribute
     if (pthread_attr_init (&attr) != 0) {
 		fprintf (stdout, "pthread_attr_init error");
 	}
-           
 	/* Creation thread des Robots */
 	for (i = 0;i<NBROBOT;i++) {
 		createThread(robot[i], &r[i]);

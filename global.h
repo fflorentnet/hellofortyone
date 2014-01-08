@@ -19,6 +19,7 @@ volatile pthread_mutex_t mutex;
 volatile int nbRobotOK;
 volatile CASE* tapis;
 volatile int* COMPTEUR_PRODUIT;
+volatile int DEMANDE_ROBOT;
 
 volatile OPERATION *SEQUENCE_PRODUIT_UN;
 volatile OPERATION *SEQUENCE_PRODUIT_DEUX;

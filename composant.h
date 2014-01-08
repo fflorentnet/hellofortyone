@@ -45,7 +45,8 @@ typedef struct COMPOSANT {
 // sa derniere operation ainsi que l'operation a venir
 typedef struct PRODUIT {
 	PRODUIT_TYPE type;
-	OPERATION* listeOperation;
+	OPERATION operation;
+	int rangOperation;
 } PRODUIT;
 
 // Enum Case_Type : contient l'etat de la case

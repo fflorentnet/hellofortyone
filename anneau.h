@@ -8,7 +8,7 @@
 
 #define TAILLEANNEAU 16
 
-OPERATION opeSuivante(PRODUIT* p);
+
 void checkAnneau();
 void* cycleAnneau(void* data);
 void initAnneau();
