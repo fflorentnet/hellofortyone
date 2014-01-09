@@ -47,12 +47,11 @@ int printOp(OPERATION op)
 	}
 	return c;
 }
-
+//Recuperation de l'operation suivante d'un produit en fonction de son type et de sa derniere operation
 OPERATION opeSuivante(PRODUIT p)
 {
 	OPERATION op = FINI;
 	int nbOpe = p.rangOperation;
-	printf("Rang de l'operation:%d\n",nbOpe);
 	if (p.operation != FINI)
 	{
 		if (p.type == P1)
@@ -94,29 +93,28 @@ void* cycleRobot(void* r)
 		if (nbRobotOK < NBROBOT)
 		{
 			nbRobotOK++;
-			if ((((ROBOT*)r)->produitEnCours) == TRUE)
-				printf("Je m'occupe d'un produit\n");
-			else
-				printf("Je ne m'occupe d'aucun produit\n");
 			
 			if (tapis[posTapis].t == PRDT) // la case contient un produit
 			{
+				//Si le produit a fait sa derniere operation, on indique qu'il est fini
 				if (opeSuivante(tapis[posTapis].contenu.p) == FINI)
 				{
 						tapis[posTapis].contenu.p.operation = FINI;
 						tapis[posTapis].contenu.p.rangOperation = ((ROBOT*)r)->enCours.rangOperation+1;
 				}
 				printf("La case contient un produit\n");
+				/* Si le robot n'a pas de produit en cours
+				* On regarde si le robot s'occupe de la prochaine operation du robot
+				* Si c'est le cas, on recupere le produit, on vide la case et on applique l'operation sur le robot 
+				* Puis, le robot indique qu'il aura besoin d'une case vide pour reposer le produit */
 				if (((ROBOT*)r)->produitEnCours == FALSE)
 				{
-					printf("je ne possede pas de produit\n");
+					printf("Je ne possede pas de produit\n");
 					OPERATION nextOp = opeSuivante(tapis[posTapis].contenu.p);
 					if (nextOp == opRobot)
 					{
 						DEMANDE_ROBOT++;
-						printf("Ajout de la nouvelle operation\n");
-						//printOp(c.contenu.p.operation);
-						//printOp(nextOp);						
+						printf("Ajout de la nouvelle operation\n");	
 						((ROBOT*)r)->enCours.operation = nextOp;
 						((ROBOT*)r)->enCours.rangOperation = tapis[posTapis].contenu.p.rangOperation+1;
 						((ROBOT*)r)->enCours.type=tapis[posTapis].contenu.p.type;
@@ -127,6 +125,9 @@ void* cycleRobot(void* r)
 			}
 			else
 			{
+				/* Si la case est vide et que le robot a un produit dans la main
+				* On repose ce produit dans la case
+				* Et le robot indique qu'il n'a plus besoin de case vide */ 
 				if (tapis[posTapis].t == VIDE) // la case est vide
 				{
 					printf("La case est vide\n");
@@ -144,10 +145,10 @@ void* cycleRobot(void* r)
 						((ROBOT*)r)->produitEnCours = FALSE;
 					}
 				}
-			
-				else if (tapis[posTapis].t == CMPSNT) // la case contient un composant
+				/* Si la case contient un composant qui contient un composant qu'il lui correspond
+				* Le robot recupere ce composant et vide la case */
+				else if (tapis[posTapis].t == CMPSNT)
 				{
-					//printf("Je recupere un composant\n");
 					switch(opRobot)
 					{
 					case OP1: 
@@ -181,6 +182,10 @@ void* cycleRobot(void* r)
 					default: break;
 					}
 				}
+				/* S'il n'y a pas de demande de place de la part des robots
+				 * Et que le robot est libre de tout produit
+				 * Le robot cree alors un produit avec le(s) composant(s) qu'il possede
+				 * Puis fait une demande de place */
 				if (DEMANDE_ROBOT == 0)
 				{
 					if (((ROBOT*)r)->produitEnCours == FALSE)
@@ -191,7 +196,6 @@ void* cycleRobot(void* r)
 							case OP1: 
 								if (((ROBOT*)r)->composant >= NB_COMPOSANT_UN)
 								{
-									//printf("Je crée un produit P1\n");
 									((ROBOT*)r)->enCours.operation=INIT;
 									((ROBOT*)r)->enCours.rangOperation = 0;
 									((ROBOT*)r)->enCours.type = P1;
@@ -203,7 +207,6 @@ void* cycleRobot(void* r)
 							case OP2: 
 								if (((ROBOT*)r)->composant >= NB_COMPOSANT_DEUX)
 								{
-									//printf("Je crée un produit P2\n");
 									((ROBOT*)r)->enCours.operation=INIT;
 									((ROBOT*)r)->enCours.rangOperation = 0;
 									((ROBOT*)r)->enCours.type = P2;
@@ -215,7 +218,6 @@ void* cycleRobot(void* r)
 							case OP3:
 								if (((ROBOT*)r)->composant >= NB_COMPOSANT_TROIS)
 								{
-									//printf("Je crée un produit P3\n");
 									((ROBOT*)r)->enCours.operation=INIT;
 									((ROBOT*)r)->enCours.rangOperation = 0;
 									((ROBOT*)r)->enCours.type = P3;
@@ -227,7 +229,6 @@ void* cycleRobot(void* r)
 							case OP4:
 								if (((ROBOT*)r)->composant >= NB_COMPOSANT_QUATRE)
 								{
-								//	printf("Je crée un produit P4\n");
 									((ROBOT*)r)->enCours.operation=INIT;
 									((ROBOT*)r)->enCours.rangOperation = 0;
 									((ROBOT*)r)->enCours.type = P4;

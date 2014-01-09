@@ -10,7 +10,8 @@
 
 void initSegment()
 {
-	int i = 0;
+	// On initialise le tableau de SEQUENCE: Il s'agit d'une suite d'operation a effectuer permettant de finaliser un PRODUIT
+	
 	SEQUENCE_PRODUIT_UN = (OPERATION*)malloc(sizeof(OPERATION)*5);
 	SEQUENCE_PRODUIT_DEUX = (OPERATION*)malloc(sizeof(OPERATION)*5);
 	SEQUENCE_PRODUIT_TROIS = (OPERATION*)malloc(sizeof(OPERATION)*6);
@@ -61,7 +62,6 @@ void createThread(pthread_t t, ROBOT* r) {
 		printf ("pthread_create error\n");
 		exit (1);
 	}
-	pthread_join(t,NULL);
 }
 
 int main() {

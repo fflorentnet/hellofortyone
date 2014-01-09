@@ -19,6 +19,7 @@ void affichageTapis()
 	int i = 0;
 	for (i=0 ;  i < TAILLEANNEAU; i++)
 	{
+		printf("#\t\t\t");
 		if(tapis[i].t == VIDE)
 		{
 			printf("La case %d est vide\n",i);
@@ -38,16 +39,14 @@ void initAnneau()
 	int i=0;
 	CASE ctemp;
 
-	
-	
-	
+	// Calcule du nombre de composants requis pour faire tous les produits
 	COMPTEUR_COMPOSANT = (int*)malloc(sizeof(int)*4);
 	COMPTEUR_COMPOSANT[0] = NB_COMPOSANT_UN*NB_PRODUIT_UN;
 	COMPTEUR_COMPOSANT[1] = NB_COMPOSANT_DEUX*NB_PRODUIT_DEUX;
 	COMPTEUR_COMPOSANT[2] = NB_COMPOSANT_TROIS*NB_PRODUIT_TROIS;
 	COMPTEUR_COMPOSANT[3] = NB_COMPOSANT_QUATRE*NB_PRODUIT_QUATRE;
 
-
+	// Initialisation du tapis -> Toutes les cases sont vides
 	tapis = (CASE*)malloc(sizeof(CASE)*TAILLEANNEAU);
 	ctemp.t=VIDE;
 	printf("Initialisation de l'anneau\n");
@@ -61,11 +60,8 @@ void initAnneau()
 void tournerRoue()
 {
 	int i;
-
-	/*for(i=0; i<TAILLEANNEAU; i++) {
-		printf("Case %d : %d\n",i,tapis[i].t);
-	}*/
-
+	
+	// Decalage du tableau d'un cran, le dernier cran devient le premier
 	CASE* temp = (CASE*)malloc(sizeof(CASE)*TAILLEANNEAU); 
 	CASE last = tapis[TAILLEANNEAU-1];
 	for(i=TAILLEANNEAU-1; i>0; i--) {
@@ -96,6 +92,7 @@ void checkAnneau()
 
 		
 		printf("Demande robot : %d\n",DEMANDE_ROBOT);
+		// Si le produit sur la case sortie, on le compte, on le sort et on met une case vide à la place
 		if (tapis[0].t == PRDT)
 		{
 			if (tapis[0].contenu.p.operation == FINI)
@@ -113,6 +110,8 @@ void checkAnneau()
 				COMPOSANT tempComposant;
 				do
 				{
+					// Envoie un composant au hasard s'il en reste
+					// OU envoie une case vide
 					random = rand() % 5 + 1;
 					if (random < 5)
 					{
@@ -124,7 +123,6 @@ void checkAnneau()
 					}
 					else
 						b=1;
-
 					switch(random)
 					{
 					/* case 1 à case 4 : On ajoute un composant
@@ -155,7 +153,6 @@ void checkAnneau()
 	else
 	{
 
-		//printf("Attente des robots...\n");
 	}
 	pthread_mutex_unlock(&mutex);
 }
